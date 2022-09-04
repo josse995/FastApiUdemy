@@ -89,14 +89,14 @@ def delete_current_user(user: dict = Depends(get_current_user), db: Session = De
 
     return successful_response(200)
 
-@router.get("/edit-password", responses=HTMLResponse)
+@router.get("/edit-password", response_class=HTMLResponse)
 async def edit_user_view(request: Request):
     user = await get_current_user(request)
     if user is None:
         return RedirectResponse(url="/auth", status_code=status.HTTP_302_FOUND)
     return templates.TemplateResponse("edit-user-password.html", {"request": request, "user": user})
 
-@router.post("/edit-password", responses=HTMLResponse)
+@router.post("/edit-password", response_class=HTMLResponse)
 async def user_password_change(request: Request, username: str = Form(...), password: str = Form(...),
                                password2: str = Form(...), db: Session = Depends(get_db)):
 
